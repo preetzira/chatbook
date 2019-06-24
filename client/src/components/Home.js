@@ -7,14 +7,15 @@ import Spinner from './sharedComponents/Spinner'
 import Groups from './Groups'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { fetchGroupsAction, logoutAction, flushErrorMessageAction } from '../actions/index'
+import { fetchGroupsAction, logoutAction, flushErrorMessageAction, checkLoginStatusAction } from '../actions/index'
 // import { socket } from '../actions/groupchat'
 
 const Home = (props) => {
 
   useEffect(()=>{
-    props.dispatch(fetchGroupsAction())
-    props.dispatch(flushErrorMessageAction())
+    props.dispatch( checkLoginStatusAction() )
+    props.dispatch( fetchGroupsAction() )
+    props.dispatch( flushErrorMessageAction() )
   },[])
 
   if(!props.isLoggedIn){

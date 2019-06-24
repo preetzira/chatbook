@@ -3,9 +3,10 @@
 module.exports = function(_,async,passport){
   return {
     setRouting: function(router){
+      router.get('/login/status', this.loginStatus)
+      
       router.post('/signup', this.signup)
       router.post('/login', this.login)
-      router.post('/login/status', this.loginStatus)
       router.post('/logout', this.logout)
     },
     signup : (req,res)=> {

@@ -95,7 +95,7 @@ export function joinGroupAction(id){
 export function checkLoginStatusAction(){
   return dispatch =>{
     dispatch(isLoading())
-    fetch('/login/stauts')
+    fetch('/login/status')
     .then(handleErrors)
       .then( res => res.json() )
         .then( data => dispatch(loginSuccess(data) ) )

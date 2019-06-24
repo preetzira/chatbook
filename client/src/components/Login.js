@@ -9,7 +9,7 @@ import Alert from './sharedComponents/Alert'
 import Spinner from './sharedComponents/Spinner'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { loginAction } from '../actions/index'
+import { loginAction, checkLoginStatusAction } from '../actions/index'
 
 const Login = (props) => {
   const [userName,setUsername] = useState('')
@@ -31,6 +31,7 @@ const Login = (props) => {
     });
   }
   useEffect(()=>{
+    props.dispatch( checkLoginStatusAction() )
     window.addEventListener('load',validateFunc())
   },[])
 

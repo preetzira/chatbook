@@ -11,12 +11,16 @@ import Custom from './sharedComponents/Custom'
 import ChatMessage from './ChatMessage'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { logoutAction } from '../actions/index'
+import { logoutAction, checkLoginStatusAction } from '../actions/index'
 // import { sendGroupMessage, subscribeToTimer } from '../actions/groupchat'
 
 const GroupChat = (props) => {
 
   const [message,setMessage] = useState('')
+
+  useEffect(()=>{
+    props.dispatch( checkLoginStatusAction() )
+  },[])
 
   if(!props.isLoggedIn){
     return <Redirect to="/login" />

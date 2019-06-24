@@ -8,8 +8,8 @@ import Button from './sharedComponents/Button'
 import Alert from './sharedComponents/Alert'
 import Spinner from './sharedComponents/Spinner'
 import { Link,Redirect } from 'react-router-dom'
-import { signupAction } from '../actions/index'
 import { connect } from 'react-redux'
+import { signupAction, checkLoginStatusAction } from '../actions/index'
 
 const Signup = (props) => {
   const [userName,setUsername] = useState('')
@@ -33,6 +33,7 @@ const Signup = (props) => {
     });
   }
   useEffect(()=>{
+    props.dispatch( checkLoginStatusAction() )
     window.addEventListener('load',validateFunc())
   },[])
 
