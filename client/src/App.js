@@ -3,13 +3,16 @@ import './App.css';
 import './assets/floating-labels.css'
 import {
   BrowserRouter as Router,
-  Route
+  Route,
+  IndexRoute,
+  Switch
 } from "react-router-dom"
 import Login from './components/Login'
 import Signup from './components/Signup'
 import Home from './components/Home'
 import GroupChat from './components/GroupChat'
 import Index from './components/Index'
+import NotFound from './components/NotFound'
 // import Button from './components/sharedComponents/Button'
 // import Alert from './components/sharedComponents/Alert'
 // import Badge from './components/sharedComponents/Badge'
@@ -34,11 +37,14 @@ import Index from './components/Index'
 function App() {
   return (
     <Router>
-      <Route exact path="/" component={Index} />
-      <Route path="/login" component={Login} />
-      <Route path="/signup" component={Signup} />
-      <Route path="/home" component={Home} />
-      <Route path="/group/:name" component={GroupChat} />
+      <Switch>
+        <Route exact path="/" component={Index} />
+        <Route path="/login" component={Login} />
+        <Route path="/signup" component={Signup} />
+        <Route path="/home" component={Home} />
+        <Route path="/group/:name" component={GroupChat} />
+        <Route component={NotFound} />
+      </Switch>
     </Router>
   );
 }
