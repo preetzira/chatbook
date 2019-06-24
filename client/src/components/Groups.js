@@ -1,8 +1,6 @@
 
 import React from 'react'
 import Card from './sharedComponents/Card'
-import Spinner from './sharedComponents/Spinner'
-import Button from './sharedComponents/Button'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { joinGroupAction } from '../actions/index'

@@ -4,7 +4,6 @@ import './assets/floating-labels.css'
 import {
   BrowserRouter as Router,
   Route,
-  IndexRoute,
   Switch
 } from "react-router-dom"
 import Login from './components/Login'
