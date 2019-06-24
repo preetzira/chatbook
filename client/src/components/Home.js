@@ -24,7 +24,7 @@ const Home = (props) => {
   return <>
           <Navbar className="navbar-light bg-light mb-5" justifyLinks="end" brand="chatbook" link="/home" expand="sm">
             <ListItem className="nav-item">
-              <Button className="danger btn-lg br-0 sign-out" onClick={ () => props.dispatch( logoutAction() ) } value='Sign out' disabled={props.isLoading ? true : false } />
+              <Button className="danger btn-lg br-0 sign-out" onClick={ () => props.dispatch( logoutAction() ) } value={props.isLoading ? <Spinner className="border small"/> : 'Sign out' } disabled={props.isLoading ? true : false } />
             </ListItem>
           </Navbar>
           <div className="container">

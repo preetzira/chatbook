@@ -3,9 +3,36 @@
 module.exports = function(_,async,passport){
   return {
     setRouting: function(router){
-      router.post('/logout', this.logout)
-      router.post('/login', this.login)
       router.post('/signup', this.signup)
+      router.post('/login', this.login)
+      router.post('/login/status', this.loginStatus)
+      router.post('/logout', this.logout)
+    },
+    signup : (req,res)=> {
+        passport.authenticate('local-signup',function(err, user, info) {
+          if (err) { return res.json( { isSignedUp:false, generalError:err } ) }
+          if (info) { return res.json( { ...info, isSignedUp:false } ) }
+          else if(user && !err && !info){
+            return res.json( {isSignedUp:true} )
+          }
+        })(req, res)
+    },
+    login : (req,res)=> {
+        passport.authenticate('local-signin',function(err, user, info) {
+          if (err) { return res.json( { isLoggedIn:false, generalError:err } ) }
+          if (info) { return res.json( { ...info, isLoggedIn:false } ) }
+          else if(user && !err && !info){
+            req.logIn(user, (err)=>{
+              if(err) { return res.json( { isLoggedIn:false, error:err } ) }
+              return res.json({isLoggedIn:true})
+            })
+          }
+        })(req, res)
+    },
+    loginStatus : (req,res) => {
+      if(req.isAuthenticated()){
+        return res.json({isLoggedIn:true})
+      } else return res.json({isLoggedIn:false})
     },
     logout : function(req,res){
       console.log(req.session);
@@ -22,34 +49,11 @@ module.exports = function(_,async,passport){
           })
         ).then(()=>{
           console.log('promise resolved');
-          res.cookie('isAuthenticated','false',{path:'/',maxAge:0,httpOnly:true})
           return res.json({ isLoggedIn : false })
         })
       } else {
         return res.redirect('back')
       }
     },
-    login : (req,res)=> {
-        passport.authenticate('local-signin',function(err, user, info) {
-          if (err) { return res.json( { isLoggedIn:false, generalError:err } ) }
-          if (info) { return res.json( { ...info, isLoggedIn:false } ) }
-          else if(user && !err && !info){
-            req.logIn(user, (err)=>{
-              if(err) { return res.json( { isLoggedIn:false, error:err } ) }
-              res.cookie('isAuthenticated','true',{path:'/',maxAge:(1000*60*60*24*7),httpOnly:true})
-              return res.json({isLoggedIn:true})
-            })
-          }
-        })(req, res)
-    },
-    signup : (req,res)=> {
-        passport.authenticate('local-signup',function(err, user, info) {
-          if (err) { return res.json( { isSignedUp:false, generalError:err } ) }
-          if (info) { return res.json( { ...info, isSignedUp:false } ) }
-          else if(user && !err && !info){
-            return res.json( {isSignedUp:true} )
-          }
-        })(req, res)
-    }
   }
 }

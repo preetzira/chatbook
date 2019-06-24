@@ -9,6 +9,7 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import Home from './components/Home'
 import GroupChat from './components/GroupChat'
+import Index from './components/Index'
 // import Button from './components/sharedComponents/Button'
 // import Alert from './components/sharedComponents/Alert'
 // import Badge from './components/sharedComponents/Badge'
@@ -33,10 +34,11 @@ import GroupChat from './components/GroupChat'
 function App() {
   return (
     <Router>
-      <Route exact path="/login" component={Login} />
-      <Route  path="/signup" component={Signup} />
-      <Route  path="/home" component={Home} />
-      <Route  path="/group/:name" component={GroupChat} />
+      <Route exact path="/" component={Index} />
+      <Route path="/login" component={Login} />
+      <Route path="/signup" component={Signup} />
+      <Route path="/home" component={Home} />
+      <Route path="/group/:name" component={GroupChat} />
     </Router>
   );
 }

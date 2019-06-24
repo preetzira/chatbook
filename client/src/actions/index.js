@@ -92,17 +92,23 @@ export function joinGroupAction(id){
   }
 }
 
+export function checkLoginStatusAction(){
+  return dispatch =>{
+    dispatch(isLoading())
+    fetch('/login/stauts')
+    .then(handleErrors)
+      .then( res => res.json() )
+        .then( data => dispatch(loginSuccess(data) ) )
+          .catch(error => dispatch( fetchFailed(error) ) )
+  }
+}
+
 export const isLoading = () =>({
       type:ACTION_LOADING
 })
 
 export const loginSuccess = (data) =>({
       type:ACTION_LOGIN_SUCCESS,
-      payload: data
-})
-
-export const logoutSuccess = (data) =>({
-      type:ACTION_LOGOUT_SUCCESS,
       payload: data
 })
 
@@ -124,6 +130,16 @@ export const fetchFailed = (error) =>({
 export const flushErrorMessageAction = () =>({
       type:ACTION_FLUSH_ERROR_MESSAGE
 })
+
+export const logoutSuccess = (data) =>({
+      type:ACTION_LOGOUT_SUCCESS,
+      payload: data
+})
+
+// export const loginFailed = (error) =>({
+//       type:ACTION_LOGIN_FAILURE,
+//       payload: { error }
+// })
 
 // export const loginFailed = (error) =>({
 //       type:ACTION_LOGIN_FAILURE,

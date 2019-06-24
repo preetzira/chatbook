@@ -4,7 +4,7 @@ module.exports = function(io){
   io.on('connection',(socket)=>{
     a++;
     console.log(a,'connected');
-    io.on('subscribeToTimer',(interval)=>{
+    io.on('new event',(interval)=>{
       console.log('client is subscribing to timer with interval ', interval);
       setInterval(() => {
         io.emit('timer', new Date());
