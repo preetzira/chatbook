@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+*{
+  font-family: 'Montserrat',sans-serif;
+  letter-spacing: .8px;
+}
+
+label {
+  font-size: 15px;
+}
+
+.card{
+  border-radius: 20px;
+  border-color: #efefef;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 6px 6px rgba(0,0,0,0.15);
+}
+
+.form-control-custom{
+  height:50px;
+  width:100%!important;
+  border-radius: 10px!important;
+  border: 1px solid #efefef;
+  box-shadow: 0px 2px .5px rgba(0, 0, 0, 0.15);
+}
+
+.form-control-custom:focus{
+  outline: none;
+}
+
+.br-0{
+  border-radius: 0;
+}
+
+.br-2{
+  border-radius: 4px;
+}
+
+.message{
+  font-size: 14px;
+  padding: 5px 8px;
+}
+
+.sent,.received{
+  display: flex;
+}
+
+.sent:after{
+  position: absolute;
+  top:67%;
+  left:98.5%;
+  content:"";
+  border-left:15px solid #007bff;
+  border-bottom:0px solid transparent;
+  border-top:10px solid transparent;
+  border-right:10px solid transparent;
+}
+
+.received:after{
+  position: absolute;
+  top:67%;
+  right:98.5%;
+  content:"";
+  border-right:15px solid #f8f9fa;
+  border-bottom:0px solid transparent;
+  border-top:10px solid transparent;
+  border-left:10px solid transparent;
+}
+
+.sent{
+  justify-content: flex-end;
+}
+
+.received{
+  justify-content: flex-start;
+}
+
+.sent>.message{
+  position: relative;
+  background: #007bff;
+  color: white;
+}
+
+.received>.message{
+  position: relative;
+  background: #f8f9fa;
+  color: black;
+}
+
+a:hover{
+  text-decoration: none;
+}
+
+.spinner-border{
+  border-width: .1em;
+}
+
+.spinner-border.small{
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.sign-out{
+  min-width: 120px;
+  font-size: 16px;
+}

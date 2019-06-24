@@ -1,0 +1,42 @@
+{
+  "name": "chatbook",
+  "version": "0.1.0",
+  "description": "A chatting app for private and group chat build with socket, express and mongo",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/preetzira/chatbook.git"
+  },
+  "keywords": [
+    "chat"
+  ],
+  "author": "Gurpreet Singh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/preetzira/chatbook/issues"
+  },
+  "homepage": "https://github.com/preetzira/chatbook#readme",
+  "dependencies": {
+    "async": "^3.0.1",
+    "bcrypt-nodejs": "0.0.3",
+    "config": "^3.1.0",
+    "connect-mongo": "^3.0.0",
+    "cookie-parser": "^1.4.4",
+    "dependable": "^1.1.0",
+    "express": "^4.17.1",
+    "express-promise-router": "^3.0.3",
+    "express-session": "^1.16.2",
+    "express-validator": "^5.3.1",
+    "flash": "^1.1.0",
+    "lodash": "^4.17.11",
+    "mongoose": "^5.6.0",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "socket.io": "^2.2.0"
+  }
+}
