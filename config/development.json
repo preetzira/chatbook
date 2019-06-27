@@ -1,0 +1,9 @@
+{  "cluster":"ENTER_YOUR_CREDENTTIALS_HERE",
+   "username":"ENTER_YOUR_CREDENTTIALS_HERE",
+   "password":"ENTER_YOUR_CREDENTTIALS_HERE",
+   "secret-key":"ENTER_YOUR_CREDENTTIALS_HERE",
+   "aylient-credentials":{
+     "application_id": "ENTER_YOUR_CREDENTTIALS_HERE",
+     "application_key": "ENTER_YOUR_CREDENTTIALS_HERE"
+   }
+}

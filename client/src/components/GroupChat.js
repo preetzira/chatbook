@@ -75,27 +75,21 @@ class GroupChat extends React.PureComponent {
   handleSubmit = (e) =>{
     if(!this.state.message) return
     this.setState({isLoading:true})
+    const messageData = {
+      group:this.group,
+      message:this.state.message,
+      user:this.user,
+      time : Date.now()
+    }
     if(this.state.emotionSwitch){
       Promise.resolve(getEmotion(this.state.message)).then((response)=>{
-        const messageData = {
-          group:this.group,
-          message:`${this.state.message} ${this.state.polaritySymbols[response.polarity]}`,
-          user:this.user,
-          time : Date.now()
-        }
+        messageData.message = `${this.state.message} ${this.state.polaritySymbols[response.polarity]}`
         socket.emit('group-message',messageData)
         this.setState({messages:[...this.state.messages,{...messageData,type:'sent'}],message:"",isLoading:false})
       })
     } else {
-      const messageData = {
-        group:this.group,
-        message:this.state.message,
-        user:this.user,
-        time : Date.now()
-      }
       socket.emit('group-message',messageData)
-      this.setState({messages:[...this.state.messages,{...messageData,type:'sent'}]})
-      this.setState({message:"",isLoading:false})
+      this.setState({messages:[...this.state.messages,{...messageData,type:'sent'}],message:"",isLoading:false})
     }
   }
 
