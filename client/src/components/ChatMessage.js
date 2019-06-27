@@ -3,13 +3,9 @@ import React from 'react'
 
 class Message extends React.Component {
   shouldComponentUpdate(nextProps){
-    console.log(nextProps);
     return this.props.time !== nextProps.time
   }
-  componentDidUpdate(){
-    console.log(this.props);
-    console.log('M update');
-  }
+  
   render(){
     const date = new Date(this.props.time)
     const time = `${date.toDateString()} ${date.toLocaleTimeString()}`
@@ -27,12 +23,9 @@ class Message extends React.Component {
 
 class ChatMessage extends React.Component{
   shouldComponentUpdate(nextProps){
-    console.log(nextProps);
     return this.props.data.length !== nextProps.data.length
   }
   componentDidUpdate(){
-    console.log('CM update');
-    console.log(this.props);
     const obj = document.getElementById('chats')
     obj.scrollTop = obj.scrollHeight
   }

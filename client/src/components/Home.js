@@ -8,7 +8,6 @@ import Groups from './Groups'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchGroupsAction, logoutAction, flushErrorMessageAction } from '../actions/index'
-// import { socket } from '../actions/groupchat'
 
 const Home = (props) => {
 
@@ -16,10 +15,6 @@ const Home = (props) => {
     props.dispatch(fetchGroupsAction())
     props.dispatch(flushErrorMessageAction())
   },[])
-
-  // if(!props.isLoggedIn){
-  //   return <Redirect to="/login" />
-  // }
 
   return <>
           <Navbar className="navbar-light bg-light mb-5" justifyLinks="end" brand="chatbook" link="/home" expand="sm">
