@@ -16,6 +16,10 @@ const Home = (props) => {
     props.dispatch(flushErrorMessageAction())
   },[])
 
+  if(!props.isLoggedIn){
+    return <Redirect to="/login" />
+  }
+
   return <>
           <Navbar className="navbar-light bg-light mb-5" justifyLinks="end" brand="chatbook" link="/home" expand="sm">
             <ListItem className="nav-item">

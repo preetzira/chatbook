@@ -1,5 +1,3 @@
-// const validator = require('express-validator')
-// const flash = require('flash')
 const express = require('express')
 const morgan  = require('morgan')
 const http = require('http')
@@ -46,10 +44,9 @@ container.resolve(function(users,groups){
       res.header('Content-Type', 'application/json');
       next()
     })
-    // app.use(cookieParser(config.get('secret-key'),{ path: '/', httpOnly: true, secure: false, maxAge: (1000 * 60 * 60 * 24 * 7)}))
+
     app.use(express.urlencoded({extended:true}))
     app.use(express.json())
-    // app.use(validator())
     app.use(session({
         secret: config.get('secret-key'),
         cookie: { path: '/', httpOnly: true, secure: false, maxAge: (1000 * 60 * 60 * 24 * 7) },
@@ -57,10 +54,8 @@ container.resolve(function(users,groups){
         saveInitialized: true,
         resave:true,
         maxAge: (1000 * 60 * 60 * 24 * 7),
-        // store: new MongoStore({mongooseConnection:mongoose.connection})
         store: new MongoStore({url:uri,collection:'sessions'})
     }));
-    // app.use(flash())
 
     app.use(passport.initialize())
     app.use(passport.session())

@@ -5,6 +5,10 @@ export const ACTION_LOADING = 'ACTION_LOADING'
 export const ACTION_FETCH_GROUPS_SUCCESS = 'ACTION_FETCH_GROUPS_SUCCESS'
 export const ACTION_FETCH_FAILURE = 'ACTION_FETCH_FAILURE'
 export const ACTION_FLUSH_ERROR_MESSAGE = 'ACTION_FLUSH_ERROR_MESSAGE'
+// export const ACTION_LOGIN_FAILURE = 'ACTION_LOGIN_FAILURE'
+// export const ACTION_SIGNUP_FAILURE = 'ACTION_SIGNUP_FAILURE'
+// export const ACTION_FETCH_GROUPS_FAILURE = 'ACTION_FETCH_GROUPS_FAILURE'
+
 
 export function loginAction({userName,password}){
   return dispatch =>{
@@ -131,6 +135,26 @@ export const logoutSuccess = (data) =>({
       type:ACTION_LOGOUT_SUCCESS,
       payload: data
 })
+
+// export const loginFailed = (error) =>({
+//       type:ACTION_LOGIN_FAILURE,
+//       payload: { error }
+// })
+
+// export const loginFailed = (error) =>({
+//       type:ACTION_LOGIN_FAILURE,
+//       payload: { error }
+// })
+
+// export const signupFailed = (error) =>({
+//       type:ACTION_SIGNUP_FAILURE,
+//       payload: { error }
+// })
+
+// export const fetchGroupsFailed = (error) =>({
+//       type:ACTION_FETCH_GROUPS_FAILURE,
+//       payload: { error }
+// })
 
 // Handle HTTP errors since fetch won't.
 function handleErrors(response) {

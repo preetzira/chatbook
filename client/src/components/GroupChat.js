@@ -5,20 +5,28 @@ import ListGroup from './sharedComponents/ListGroup'
 import ListItem from './sharedComponents/ListItem'
 import InputGroup from './sharedComponents/InputGroup'
 import Input from './sharedComponents/Input'
+import Label from './sharedComponents/Label'
 import Button from './sharedComponents/Button'
 import Spinner from './sharedComponents/Spinner'
 import Custom from './sharedComponents/Custom'
 import ChatMessage from './ChatMessage'
+import { Picker } from 'emoji-mart'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutAction, checkLoginStatusAction } from '../actions/index'
 import { socket } from '../actions/groupchat'
+import getEmotion from '../helpers/helper'
+import 'emoji-mart/css/emoji-mart.css'
 
 class GroupChat extends React.PureComponent {
   state = {
     message:"",
     messages:[],
-    userTyping:""
+    userTyping:"",
+    visibleEmoji:false,
+    isLoading:false,
+    polaritySymbols: {positive:"😄",negative:"☹️",neutral:"🙂"},
+    emotionSwitch:false
   }
 
   componentDidMount(){
@@ -50,17 +58,45 @@ class GroupChat extends React.PureComponent {
     this.setState({message:e.target.value})
   }
 
+  toggleShowEmoji = () =>{
+    this.setState({visibleEmoji:!this.state.visibleEmoji})
+  }
+
+  insertEmoji = emoji => {
+    this.setState({message:`${this.state.message}${emoji.native}`})
+  }
+
+  toggleEmotionDetection = e => {
+    this.setState({
+      emotionSwitch:!this.state.emotionSwitch
+    })
+  }
 
   handleSubmit = (e) =>{
-    const messageData = {
-      group:this.group,
-      message:this.state.message,
-      user:this.user,
-      time : Date.now()
+    if(!this.state.message) return
+    this.setState({isLoading:true})
+    if(this.state.emotionSwitch){
+      Promise.resolve(getEmotion(this.state.message)).then((response)=>{
+        const messageData = {
+          group:this.group,
+          message:`${this.state.message} ${this.state.polaritySymbols[response.polarity]}`,
+          user:this.user,
+          time : Date.now()
+        }
+        socket.emit('group-message',messageData)
+        this.setState({messages:[...this.state.messages,{...messageData,type:'sent'}],message:"",isLoading:false})
+      })
+    } else {
+      const messageData = {
+        group:this.group,
+        message:this.state.message,
+        user:this.user,
+        time : Date.now()
+      }
+      socket.emit('group-message',messageData)
+      this.setState({messages:[...this.state.messages,{...messageData,type:'sent'}]})
+      this.setState({message:"",isLoading:false})
     }
-    socket.emit('group-message',messageData)
-    this.setState({messages:[...this.state.messages,{...messageData,type:'sent'}]})
-    this.setState({message:""})
   }
 
 render(){
@@ -76,20 +112,43 @@ render(){
             </ListItem>
           </Navbar>
           <div className="container-fluid">
-            <div className="row mt-4">
-                <div className="col-md-3 col-sm-12">
-                </div>
-                <div className="col-md-6 col-sm-12">
+             <div className="row mt-4">
+                <div className="col-md-6 col-sm-12 mx-auto">
                   <ListGroup>
                     <ListItem>
-                      {this.group}
+                      <div className="clearfix">
+                        <span className="float-left">{this.group}</span>
+                        <Custom className="custom-switch float-right">
+                          <Input type="checkbox"
+                                 className="custom-control-input"
+                                 id="toggle-emotion-detection"
+                                 onChange={this.toggleEmotionDetection}
+                                 checked={this.state.emotionSwitch}
+                          />
+                          <Label className="custom-control-label" htmlFor="toggle-emotion-detection" value="Emotion detection"/>
+                        </Custom>
+                      </div>
                     </ListItem>
                     <ListItem>
                       <ChatMessage user={this.user} data={this.state.messages}/>
                     </ListItem>
+                    {this.state.isLoading ? <ListItem><Spinner className="border d-flex mx-auto text-primary" /></ListItem>: "" }
                     <ListItem>
                       <InputGroup left={
-                          <Input value={this.state.message} type="text" placeholder={this.state.userTyping ? this.state.userTyping : 'enter your message here'} name="message" className="form-control" onChange={this.handleChange} onKeyPress={this.handleEvent} autoFocus/>
+                          <div className="input-group-prepend">
+                            <span className="input-group-text btn" onClick={this.toggleShowEmoji}>😄</span>
+                          </div>
+                        }
+                        center={
+                          <Input type="text"
+                                 value={this.state.message}
+                                 name="message"
+                                 className="form-control"
+                                 placeholder={this.state.userTyping ? this.state.userTyping : 'enter your message here'}
+                                 onChange={this.handleChange}
+                                 onKeyPress={this.handleEvent}
+                                 autoFocus
+                          />
                         }
                         right={
                           <div className="input-group-append">
@@ -97,10 +156,9 @@ render(){
                           </div>
                         }
                       />
+                      { this.state.visibleEmoji ? <Picker onSelect={this.insertEmoji} style={{position:'absolute'}}/> : '' }
                     </ListItem>
                   </ListGroup>
-                </div>
-                <div className="col-md-3 col-sm-12">
                 </div>
              </div>
           </div>

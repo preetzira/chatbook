@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Custom = (props) => {
-  return <div className={props.className}>
+  return <div className={`custom-control ${props.className}`}>
             {props.children}
          </div>
 }

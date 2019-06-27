@@ -49,7 +49,7 @@ label {
 .sent:after{
   position: absolute;
   top:67%;
-  left:98.5%;
+  left:99.5%;
   content:"";
   border-left:15px solid #007bff;
   border-bottom:0px solid transparent;
@@ -60,7 +60,7 @@ label {
 .received:after{
   position: absolute;
   top:67%;
-  right:98.5%;
+  right:99.5%;
   content:"";
   border-right:15px solid #f8f9fa;
   border-bottom:0px solid transparent;
