@@ -98,7 +98,7 @@ export function checkLoginStatusAction(){
     fetch('/login/status')
     .then(handleErrors)
       .then( res => res.json() )
-        .then( data => dispatch(loginSuccess(data) ) )
+        .then( data => dispatch( loginSuccess(data) ) )
           .catch(error => dispatch( fetchFailed(error) ) )
   }
 }

@@ -11,6 +11,8 @@ import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { loginAction, checkLoginStatusAction } from '../actions/index'
 
+require('../actions/groupchat')
+
 const Login = (props) => {
   const [userName,setUsername] = useState('')
   const [password,setPassword] = useState('')
@@ -34,6 +36,14 @@ const Login = (props) => {
     props.dispatch( checkLoginStatusAction() )
     window.addEventListener('load',validateFunc())
   },[])
+
+  const handleChange = e => {
+    if(e.target.name=="username"){
+      setUsername(e.target.value)
+    } else {
+      setPassword(e.target.value)
+    }
+  }
 
   const handleSubmit = e => {
     if(userName !== "" && password !== ""){
@@ -59,7 +69,7 @@ const Login = (props) => {
                 <form action="javascript:void(0)" onSubmit={handleSubmit} method="POST" className="needs-validation" noValidate>
                   <div className="col-md-10 col-10 mx-auto">
                     <FormGroup className="form-label-group">
-                      <Input value={userName} onUpdate={(value)=>setUsername(value)} type="text" id="username" name="username" className="form-control form-control-custom" placeholder="Enter your username here" aria-describedby="inputGroupPrepend" required/>
+                      <Input value={userName} onChange={handleChange} type="text" id="username" name="username" className="form-control form-control-custom" placeholder="Enter your username here" aria-describedby="inputGroupPrepend" required/>
                       <Label htmlFor="username" value="Enter your username here"/>
                       <div className="invalid-tooltip">
                         Please enter the required field.
@@ -69,7 +79,7 @@ const Login = (props) => {
                   <div className="col-md-10 col-10 mx-auto">
                     <FormGroup className="form-label-group">
                       <span className={`view ${isVisible ? 'slash':''}`} onClick={()=>setVisible(!isVisible)}>{isVisible ? <>&#128065;</> : <>&#128065;</>}</span>
-                      <Input value={password} onUpdate={(value)=>setPassword(value)} type={isVisible ? "text": "password"} id="password" name="password" className="form-control form-control-custom" placeholder="Enter your password here" aria-describedby="inputGroupPrepend" required/>
+                      <Input value={password} onChange={handleChange} type={isVisible ? "text": "password"} id="password" name="password" className="form-control form-control-custom" placeholder="Enter your password here" aria-describedby="inputGroupPrepend" required/>
                       <Label htmlFor="password" value="Enter your password here"/>
                       <div className="invalid-tooltip">
                         Please enter the required field.
@@ -92,7 +102,6 @@ const Login = (props) => {
 }
 
 function mapStateToProps({state}){
-  console.log(state);
   const { isLoading, isSignedUp, isLoggedIn, loginError } = state
   return { isLoading, isSignedUp, isLoggedIn, loginError }
 }

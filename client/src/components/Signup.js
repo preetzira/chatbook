@@ -8,8 +8,8 @@ import Button from './sharedComponents/Button'
 import Alert from './sharedComponents/Alert'
 import Spinner from './sharedComponents/Spinner'
 import { Link,Redirect } from 'react-router-dom'
-import { connect } from 'react-redux'
 import { signupAction, checkLoginStatusAction } from '../actions/index'
+import { connect } from 'react-redux'
 
 const Signup = (props) => {
   const [userName,setUsername] = useState('')
@@ -36,6 +36,18 @@ const Signup = (props) => {
     props.dispatch( checkLoginStatusAction() )
     window.addEventListener('load',validateFunc())
   },[])
+
+  const handleChange = e => {
+    if(e.target.name == "username"){
+      setUsername(e.target.value)
+    } if(e.target.name == "fullname"){
+      setFullname(e.target.value)
+    } if(e.target.name == "useremail"){
+      setUseremail(e.target.value)
+    } if(e.target.name == "password") {
+      setPassword(e.target.value)
+    }
+  }
 
   const handleSubmit = (e) => {
     if(userName !== "" && fullName !== "" && (/(.+)@(.+){2,}/.test(userEmail)) && password !== ""){
@@ -64,7 +76,7 @@ const Signup = (props) => {
                 <form action="javascript:void(0)" onSubmit={handleSubmit} className="needs-validation" noValidate>
                   <div className="col-md-10 col-10 mx-auto">
                     <FormGroup className="form-label-group">
-                      <Input value={userName} onUpdate={(value)=>setUsername(value)} type="text" id="username" name="username" className="form-control form-control-custom" placeholder="Enter your username here" aria-describedby="inputGroupPrepend" required/>
+                      <Input value={userName} onChange={handleChange} type="text" id="username" name="username" className="form-control form-control-custom" placeholder="Enter your username here" aria-describedby="inputGroupPrepend" required/>
                       <Label htmlFor="username" value="Enter your username here"/>
                       <div className="invalid-tooltip">
                         Please enter the required field.
@@ -73,7 +85,7 @@ const Signup = (props) => {
                   </div>
                   <div className="col-md-10 col-10 mx-auto">
                     <FormGroup className="form-label-group">
-                      <Input value={fullName} onUpdate={(value)=>setFullname(value)} type="text" id="fullname" name="fullname" className="form-control form-control-custom" placeholder="Enter your fullname here" aria-describedby="inputGroupPrepend" required/>
+                      <Input value={fullName} onChange={handleChange} type="text" id="fullname" name="fullname" className="form-control form-control-custom" placeholder="Enter your fullname here" aria-describedby="inputGroupPrepend" required/>
                       <Label htmlFor="fullname" value="Enter your fullname here"/>
                       <div className="invalid-tooltip">
                         Please enter the required field.
@@ -82,7 +94,7 @@ const Signup = (props) => {
                   </div>
                   <div className="col-md-10 col-10 mx-auto">
                     <FormGroup className="form-label-group">
-                      <Input value={userEmail} onUpdate={(value)=>setUseremail(value)} type="email" id="useremail" name="useremail" className="form-control form-control-custom" placeholder="Enter your email address here" aria-describedby="inputGroupPrepend" required/>
+                      <Input value={userEmail} onChange={handleChange} type="email" id="useremail" name="useremail" className="form-control form-control-custom" placeholder="Enter your email address here" aria-describedby="inputGroupPrepend" required/>
                       <Label htmlFor="useremail" value="Enter your email address here"/>
                       <div className="invalid-tooltip">
                         Please enter a vaild email address.
@@ -92,7 +104,7 @@ const Signup = (props) => {
                   <div className="col-md-10 col-10 mx-auto">
                     <FormGroup className="form-label-group">
                       <span className={`view ${isVisible ? 'slash':''}`} onClick={()=>setVisible(!isVisible)}>{isVisible ? <>&#128065;</> : <>&#128065;</>}</span>
-                      <Input value={password} onUpdate={(value)=>setPassword(value)} type={isVisible ? "text": "password"} id="password" name="password" className="form-control form-control-custom" placeholder="Enter your password here" aria-describedby="inputGroupPrepend" required/>
+                      <Input value={password} onChange={handleChange} type={isVisible ? "text": "password"} id="password" name="password" className="form-control form-control-custom" placeholder="Enter your password here" aria-describedby="inputGroupPrepend" required/>
                       <Label htmlFor="password" value="Enter your password here"/>
                       <div className="invalid-tooltip">
                         Please enter the required field.

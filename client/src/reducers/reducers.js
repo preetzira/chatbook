@@ -9,6 +9,8 @@ import {
          ACTION_FETCH_FAILURE,
          ACTION_LOGOUT_SUCCESS } from '../actions/index'
 
+import { ACTION_FETCH_GROUPS_MESSAGES } from '../actions/groupchat'
+
 const initialState = {
   isLoading:false,
   isLoggedIn: false,
@@ -17,13 +19,14 @@ const initialState = {
   friends:[],
   chats:[],
   groups:[],
+  groupchat:{},
   loginError:null,
   signupError:null,
   generalError:null
 }
 
 export default function(state = initialState, action){
-
+  
   switch (action.type) {
 
     case ACTION_LOADING:
@@ -80,7 +83,8 @@ export default function(state = initialState, action){
       return {
         ...state,
         isLoading:false,
-        ...action.payload
+        ...action.payload,
+        groupchat: Object.assign({},...action.payload.groups.map((group)=> {return {[group.fullname]:[]}}))
       }
       break;
     case ACTION_LOGOUT_SUCCESS:
@@ -95,6 +99,13 @@ export default function(state = initialState, action){
           ...state,
           isLoading:false,
           ...action.payload
+        }
+        break;
+    case ACTION_FETCH_GROUPS_MESSAGES:
+        return {
+          ...state,
+          isLoading : false,
+          groupchat : { ...state.groupchat, [action.payload.group] : [ ...state.groupchat[action.payload.group.toString()], { user : action.payload.user, message : action.payload.message, time : Date.now() } ] }
         }
         break;
     // case ACTION_LOGIN_FAILURE:

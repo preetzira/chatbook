@@ -12,24 +12,67 @@ import ChatMessage from './ChatMessage'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutAction, checkLoginStatusAction } from '../actions/index'
-// import { sendGroupMessage, subscribeToTimer } from '../actions/groupchat'
+import { socket } from '../actions/groupchat'
 
-const GroupChat = (props) => {
+class GroupChat extends React.PureComponent {
+  state = {
+    message:"",
+    messages:[],
+    userTyping:""
+  }
 
-  const [message,setMessage] = useState('')
+  componentDidMount(){
+    if(!this.props.isLoggedIn){
+        this.props.dispatch( checkLoginStatusAction() )
+    }
+    socket.on('new-group-message', (newMessage) => {
+      if(newMessage.group === this.group){
+        this.setState({messages:[...this.state.messages,{...newMessage,type:'received'}],userTyping:""})
+      }
+    })
+    socket.on('user-typing',(user)=>{
+      this.setState({userTyping:`${user} is typing...`})
+    })
+  }
 
-  useEffect(()=>{
-    props.dispatch( checkLoginStatusAction() )
-  },[])
+  group = this.props.match.params.name
+  user = Date.now().toString(32).substr(5)
 
-  if(!props.isLoggedIn){
+  handleEvent = (e) =>{
+    if(e.which == 13 && this.state.message.length){
+      this.handleSubmit()
+    } else {
+      socket.emit('typing',this.user)
+    }
+  }
+
+  handleChange = e => {
+    this.setState({message:e.target.value})
+  }
+
+
+  handleSubmit = (e) =>{
+    const messageData = {
+      group:this.group,
+      message:this.state.message,
+      user:this.user,
+      time : Date.now()
+    }
+    socket.emit('group-message',messageData)
+    this.setState({messages:[...this.state.messages,{...messageData,type:'sent'}]})
+    this.setState({message:""})
+  }
+
+render(){
+
+  if(!this.props.isLoggedIn){
     return <Redirect to="/login" />
   }
 
   return <>
           <Navbar className="navbar-light bg-light mb-5" justifyLinks="end" brand="chatbook" link="/home" expand="sm">
             <ListItem className="nav-item">
-              <Button className="danger btn-lg br-0 sign-out" onClick={ () => props.dispatch( logoutAction() ) } value={props.isLoading ? <Spinner className="border small"/> : 'Sign out' } disabled={props.isLoading ? true : false } />
+              <Button className="danger btn-lg br-0 sign-out" onClick={ () => this.props.dispatch( logoutAction() ) } value={this.props.isLoading ? <Spinner className="border small"/> : 'Sign out' } disabled={this.props.isLoading ? true : false } />
             </ListItem>
           </Navbar>
           <div className="container-fluid">
@@ -39,18 +82,18 @@ const GroupChat = (props) => {
                 <div className="col-md-6 col-sm-12">
                   <ListGroup>
                     <ListItem>
-                      group name
+                      {this.group}
                     </ListItem>
                     <ListItem>
-                      <ChatMessage style={{height:'300px',maxHeigt:'300px',overflowY:'auto',padding: '0px 5px',overflowX:'hidden'}} />
+                      <ChatMessage user={this.user} data={this.state.messages}/>
                     </ListItem>
                     <ListItem>
                       <InputGroup left={
-                          <Input type="text" name="message" className="form-control" onUpdate={ (message) => setMessage(message) }/>
+                          <Input value={this.state.message} type="text" placeholder={this.state.userTyping ? this.state.userTyping : 'enter your message here'} name="message" className="form-control" onChange={this.handleChange} onKeyPress={this.handleEvent} autoFocus/>
                         }
                         right={
                           <div className="input-group-append">
-                            <Button className="outline-info" value="Send" onClick={ () => {} } />
+                            <Button className="outline-info" value="Send" onClick={this.handleSubmit} />
                           </div>
                         }
                       />
@@ -62,7 +105,7 @@ const GroupChat = (props) => {
              </div>
           </div>
          </>
-}
+}}
 
 function mapStateToProps({state}){
   const { isLoading, isLoggedIn } = state
